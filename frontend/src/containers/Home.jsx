@@ -1,86 +1,91 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from '../assets/img/loading.gif';
-import postImage from '../assets/img/newspaper-icon-png.jpg';
-import PostForm from '../components/Posts/PostForm';
-import Post from '../components/Posts/Post';
-import { fetchPosts } from '../reducks/posts/operations';
-import { getPosts } from '../reducks/posts/selectors';
+import Card from '../components/common/Card';
+import Footer from '../components/common/Footer';
+import Header from '../components/common/Header';
+import ImgCover from '../assets/img/coverImage.png';
+import ImgButton from '../assets/img/button1.png';
+import Imgbutton from '../assets/img/sp-cover.png';
+import { getMovies } from '../reducks/movies/selectors';
+import { fetchMovies } from '../reducks/movies/operations';
+import queryString from 'query-string';
 
 const Home = () => {
+    const parsed = queryString.parse(window.location.search);
+    const [search, setSearch] = useState(null);
+    const [category, setCategory] = useState(null);
     const dispatch = useDispatch();
     const selector = useSelector(state => state);
-    const posts = getPosts(selector);
-    let [page, setPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
-
+    const movies = getMovies(selector);
     useEffect(() => {
-        dispatch(fetchPosts({ page }));
-        // eslint-disable-next-line
+        dispatch(fetchMovies());
+
+        if (parsed.search !== undefined) {
+            setSearch(parsed.search);
+        }
+        if (parsed.category !== undefined) {
+            setCategory(parsed.category);
+        }
     }, []);
-
-    // Infinite Scroll Pagination Flow
-    const observer = useRef();
-
-    // Reference to a very last post element
-    const lastPostElement = useCallback(
-        node => {
-            if (isLoading) return;
-            // Disconnect reference from previous element, so that new last element is hook up correctly
-            if (observer.current) {
-                observer.current.disconnect();
-            }
-
-            // Observe changes in the intersection of target element
-            observer.current = new IntersectionObserver(async entries => {
-                // That means that we are on the page somewhere, In our case last element of the page
-                if (entries[0].isIntersecting && posts.next) {
-                    // Proceed fetch new page
-                    setIsLoading(true);
-                    setPage(++page);
-                    await dispatch(fetchPosts({ page }));
-                    setIsLoading(false);
-                }
-            });
-
-            // Reconnect back with the new last post element
-            if (node) {
-                observer.current.observe(node);
-            }
-        },
-        // eslint-disable-next-line
-        [posts.next]
-    );
-
+    useEffect(() => {
+        if (search != null || category != null) {
+            dispatch(fetchMovies(search, category));
+        }
+    }, [search, category]);
     return (
-        <section className="content">
-            <PostForm />
-            <section className="posts">
-                {posts.results.length > 0 ? (
-                    <ul>
-                        {posts.results.map((post, index) => {
-                            return (
-                                <Post
-                                    ref={index === posts.results.length - 1 ? lastPostElement : null}
-                                    key={post.id}
-                                    post={post}
-                                />
-                            );
-                        })}
-                    </ul>
-                ) : (
-                    <div className="no-post">
-                        <img width="72" src={postImage} alt="icon" />
-                        <p>No posts here yet...</p>
+        <>
+            <Header />
+            <section class="cover">
+                <div class="gradient">
+                    <div class="coverdetails m-25">
+                        <div class="row sp-coverdetails">
+                            <div class="trailer m-10 row">
+                                <img src={ImgButton} alt="" />
+                                <div class="p-10">Watch Trailer</div>
+                            </div>
+                            <div class="m-10">
+                                <p class="date">October 1st</p>
+                                In cinemas
+                            </div>
+                        </div>
+                        <div class="cover-description m-10">
+                            <p>
+                                James Bond has left active service. His peace is short-lived when Felix Leiter, an old
+                                friend from the CIA, turns up asking for help, leading Bond onto the trail of a
+                                mysterious villain armed with dangerous new technology.
+                            </p>
+                        </div>
                     </div>
-                )}
-                {isLoading && (
-                    <div className="loading">
-                        <img src={Loading} className="" alt="" />
-                    </div>
-                )}
+                </div>
+                <img src={ImgCover} alt="" class="backgroundcover" />
+                <img src={Imgbutton} class="sp-backgroundcover" alt="" />
             </section>
-        </section>
+            <section class="content">
+                <h1 class="section-heading m-20 p-10">Newly Released</h1>
+                {movies.results.length > 0 ? (
+                    <div class="grid">
+                        {movies.results.map(movie => (
+                            <Card movie={movie} />
+                        ))}
+                    </div>
+                ) : (
+                    <div class="no-post">
+                        <p>No movies here yet...</p>
+                    </div>
+                )}
+
+                <hr class="divider" />
+
+                <h1 class="section-heading m-20">Coming Soon</h1>
+
+                <div class="grid">
+                    {/* <Card />
+                    
+                    <Card /> */}
+                </div>
+            </section>
+            <Footer />
+        </>
     );
 };
 
