@@ -15,20 +15,20 @@ const api = axios.create({
 });
 
 export default class API {
-    getMovies = async (search, category) => {
+    getMovies = async params => {
         let url = '/movies/';
         let query = new URLSearchParams();
-        if (search) {
-            query.append('search', search);
+        for (const key in params) {
+            if (params[key] != null) {
+                query.append(key, params[key]);
+            }
         }
-        if (category) {
-            query.append('category', category);
-        }
+
         if (query.toString() != '') {
             url += '?' + query.toString();
         }
         const places = await api
-            .get('/movies/')
+            .get(url)
             .then(response => {
                 console.log(response.data);
                 return response.data;

@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Card from '../components/common/Card';
+import { useSelector } from 'react-redux';
 import Footer from '../components/common/Footer';
 import Header from '../components/common/Header';
 import ImgCover from '../assets/img/coverImage.png';
 import ImgButton from '../assets/img/button1.png';
 import Imgbutton from '../assets/img/sp-cover.png';
 import { getMovies } from '../reducks/movies/selectors';
-import { fetchMovies } from '../reducks/movies/operations';
 import queryString from 'query-string';
-
+import API from '../API';
+const api = new API();
 const Home = () => {
     const parsed = queryString.parse(window.location.search);
-    const [search, setSearch] = useState(null);
-    const [category, setCategory] = useState(null);
-    const dispatch = useDispatch();
+    const [moviesComingSoon, setMoviesCommingSoon] = useState(null);
+    const [moviesNewReleased, setMoviesNewReleased] = useState(null);
     const selector = useSelector(state => state);
     const movies = getMovies(selector);
     useEffect(() => {
-        dispatch(fetchMovies());
-
-        if (parsed.search !== undefined) {
-            setSearch(parsed.search);
-        }
-        if (parsed.category !== undefined) {
-            setCategory(parsed.category);
-        }
+        api.getMovies({ release_type: 'Coming Soon' })
+            .then(movies => {
+                console.log(movies);
+                setMoviesCommingSoon(movies);
+            })
+            .catch(error => {
+                alert('Failed to connect API: /movies/');
+            });
+        api.getMovies({ release_type: 'Newly Released' })
+            .then(movies => {
+                console.log(movies);
+                setMoviesNewReleased(movies);
+            })
+            .catch(error => {
+                alert('Failed to connect API: /movies/');
+            });
     }, []);
-    useEffect(() => {
-        if (search != null || category != null) {
-            dispatch(fetchMovies(search, category));
-        }
-    }, [search, category]);
     return (
         <>
             <Header />
@@ -64,9 +65,9 @@ const Home = () => {
                 <h1 class="section-heading m-20 p-10">Newly Released</h1>
                 {movies.results.length > 0 ? (
                     <div class="grid">
-                        {movies.results.map(movie => (
+                        {/* {moviesNewReleased.map(movie => (
                             <Card movie={movie} />
-                        ))}
+                        ))} */}
                     </div>
                 ) : (
                     <div class="no-post">
@@ -79,9 +80,9 @@ const Home = () => {
                 <h1 class="section-heading m-20">Coming Soon</h1>
 
                 <div class="grid">
-                    {/* <Card />
-                    
-                    <Card /> */}
+                    {/* {moviesComingSoon.map(movie => (
+                        <Card movie={movie} />
+                    ))} */}
                 </div>
             </section>
             <Footer />

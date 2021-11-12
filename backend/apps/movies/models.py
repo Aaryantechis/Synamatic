@@ -4,6 +4,10 @@ from apps.categories.models import Category
 # Create your models here.
 
 class Movie(models.Model):
+    MY_CHOICES = (
+        ('Newly Released', 'Newly Released'),
+        ('Coming Soon', 'Coming Soon')
+    )
     class Meta(object):
         db_table = 'movie'
     name = models.CharField(
@@ -19,7 +23,7 @@ class Movie(models.Model):
         'image mobile', blank=True, null=True
     )
     release_type = models.CharField(
-        'release_type', blank=False, null=False, max_length=50,
+        'release_type', blank=False, null=False, max_length=50, choices= MY_CHOICES
     )
     category_id = models.ForeignKey(
         Category, on_delete=models.CASCADE

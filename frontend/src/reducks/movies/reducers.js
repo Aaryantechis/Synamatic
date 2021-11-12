@@ -7,7 +7,6 @@ export const MoviesReducer = (state = initialState.movies, action) => {
             return {
                 ...state,
                 results: action.payload.movies.results
-                // results: [...state.results, ...action.payload.movies.results]
             };
         default:
             return state;

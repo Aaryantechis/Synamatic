@@ -14,7 +14,7 @@ const Header = () => {
         setSearch(event.target.value);
     };
     const submitAction = () => {
-        dispatch(push('?search=' + search));
+        dispatch(push('/search/?search=' + search));
     };
 
     return (
@@ -38,7 +38,7 @@ const Header = () => {
                             <div class="p-10">Category</div>
                             <img src={ImgArrowDown} alt="" />
                         </div>
-                        <div class="favourites m-15 row" onClick={() => dispatch(push('/favourites '))}>
+                        <div class="favourites m-15 row" onClick={() => dispatch(push('/favourites'))}>
                             <div class="p-10">Favourites</div>
                             <img src={ImgHeart} alt="" />
                         </div>
