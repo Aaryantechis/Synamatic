@@ -8,6 +8,7 @@ import Imgbutton from '../assets/img/sp-cover.png';
 import { getMovies } from '../reducks/movies/selectors';
 import queryString from 'query-string';
 import API from '../API';
+import Card from '../components/common/Card';
 const api = new API();
 const Home = () => {
     const parsed = queryString.parse(window.location.search);
@@ -18,7 +19,6 @@ const Home = () => {
     useEffect(() => {
         api.getMovies({ release_type: 'Coming Soon' })
             .then(movies => {
-                console.log(movies);
                 setMoviesCommingSoon(movies);
             })
             .catch(error => {
@@ -26,7 +26,6 @@ const Home = () => {
             });
         api.getMovies({ release_type: 'Newly Released' })
             .then(movies => {
-                console.log(movies);
                 setMoviesNewReleased(movies);
             })
             .catch(error => {
@@ -63,11 +62,11 @@ const Home = () => {
             </section>
             <section class="content">
                 <h1 class="section-heading m-20 p-10">Newly Released</h1>
-                {movies.results.length > 0 ? (
+                {moviesNewReleased && moviesNewReleased.results.length > 0 ? (
                     <div class="grid">
-                        {/* {moviesNewReleased.map(movie => (
+                        {moviesNewReleased.results.map(movie => (
                             <Card movie={movie} />
-                        ))} */}
+                        ))}
                     </div>
                 ) : (
                     <div class="no-post">
@@ -80,9 +79,17 @@ const Home = () => {
                 <h1 class="section-heading m-20">Coming Soon</h1>
 
                 <div class="grid">
-                    {/* {moviesComingSoon.map(movie => (
-                        <Card movie={movie} />
-                    ))} */}
+                    {moviesComingSoon && moviesComingSoon.results.length > 0 ? (
+                        <div class="grid">
+                            {moviesComingSoon.results.map(movie => (
+                                <Card movie={movie} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div class="no-post">
+                            <p>No movies here yet...</p>
+                        </div>
+                    )}
                 </div>
             </section>
             <Footer />
