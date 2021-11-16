@@ -23,7 +23,7 @@ const Card = ({ movie }) => {
             <div class="cards m-10">
                 <img class="cardimage" src={movie.image} alt="" />
                 <div class="carddetails">
-                    <p></p>
+                    <p>{movie.name}</p>
                     <div class="row space-between">
                         <div>
                             <img src={Imgstar} alt="" />

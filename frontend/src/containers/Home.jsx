@@ -16,6 +16,7 @@ const Home = () => {
     const [moviesNewReleased, setMoviesNewReleased] = useState(null);
     const selector = useSelector(state => state);
     const movies = getMovies(selector);
+
     useEffect(() => {
         api.getMovies({ release_type: 'Coming Soon' })
             .then(movies => {
@@ -76,21 +77,18 @@ const Home = () => {
 
                 <hr class="divider" />
 
-                <h1 class="section-heading m-20">Coming Soon</h1>
-
-                <div class="grid">
-                    {moviesComingSoon && moviesComingSoon.results.length > 0 ? (
-                        <div class="grid">
-                            {moviesComingSoon.results.map(movie => (
-                                <Card movie={movie} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div class="no-post">
-                            <p>No movies here yet...</p>
-                        </div>
-                    )}
-                </div>
+                <h1 class="section-heading m-20 ">Coming Soon</h1>
+                {moviesComingSoon && moviesComingSoon.results.length > 0 ? (
+                    <div class="grid">
+                        {moviesComingSoon.results.map(movie => (
+                            <Card movie={movie} />
+                        ))}
+                    </div>
+                ) : (
+                    <div class="no-post">
+                        <p>No movies here yet...</p>
+                    </div>
+                )}
             </section>
             <Footer />
         </>

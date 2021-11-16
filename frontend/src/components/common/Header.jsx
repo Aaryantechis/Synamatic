@@ -5,7 +5,8 @@ import ImgLogo from '../../assets/img/logo.png';
 import ImgSearch from '../../assets/img/search.svg';
 import ImgArrowDown from '../../assets/img/arrowdown.svg';
 import ImgHeart from '../../assets/img/heart.svg';
-import Imgmenu from '../../assets/img/menu.svg';
+import MenuIcon from './MenuIcon';
+import Search from './Search';
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -21,9 +22,9 @@ const Header = () => {
         <div>
             <header>
                 <div class="navbar row space-between">
-                    <img class="sp-menu" src={Imgmenu} alt="" />
-                    <img src={ImgLogo} class="sp-logo" alt="" />
-                    <img src={ImgSearch} class="sp-search" alt="" />
+                    <MenuIcon />
+                    <img src={ImgLogo} class="sp-logo" onClick={() => dispatch(push('/'))} alt="" />
+                    <Search />
                     <div class="logo">
                         <img src={ImgLogo} alt="" class="logoimg" onClick={() => dispatch(push('/'))} />
                     </div>
@@ -34,8 +35,10 @@ const Header = () => {
                                 <img src={ImgSearch} alt="" />
                             </div>
                         </form>
-                        <div class="category m-15 row">
-                            <div class="p-10">Category</div>
+                        <div class="category m-15 row" onClick={() => dispatch(push('/category'))}>
+                            <div class="p-10" onClick={() => dispatch(push('/category'))}>
+                                Category
+                            </div>
                             <img src={ImgArrowDown} alt="" />
                         </div>
                         <div class="favourites m-15 row" onClick={() => dispatch(push('/favourites'))}>

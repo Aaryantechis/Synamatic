@@ -1,7 +1,6 @@
 /*******************************************************
 COMMON
 *******************************************************/
-
 html body {
     padding: 0;
     margin: 0;
@@ -59,7 +58,6 @@ html body {
 .trailer .date {
     margin: 0;
 }
-
 @media screen and (max-width: 1100px) {
     .grid {
         display: grid;
@@ -99,18 +97,18 @@ header .logo img {
 header .menus {
     text-align: center;
 }
-header .menus .searchbox {
+.searchbox {
     position: relative;
     width: fit-content;
     padding: 3px;
 }
-header .menus .searchbox img {
+.searchbox img {
     position: absolute;
     right: 0;
     width: 25px;
     padding: 4px;
 }
-header .menus .searchbox input {
+.searchbox input {
     background-color: rgb(0, 0, 0, 0);
     width: 200px;
     height: 30px;
@@ -129,8 +127,20 @@ header .sp-menu {
 header .sp-logo {
     display: none;
 }
-header .sp-search {
+.sp-search {
     display: none;
+}
+.searchpopup {
+    position: absolute;
+    top: 0px;
+    right: -60px;
+}
+.togglemenu {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    background-color: rgb(0, 0, 0, 0.9);
+    border-bottom-right-radius: 20px;
 }
 @media screen and (max-width: 800px) {
     header .menus {
@@ -144,15 +154,18 @@ header .sp-search {
         height: 50px;
         display: block;
     }
+    header .sp-menu.down {
+        transform: rotate(90deg);
+    }
     header .sp-logo {
         display: block;
         height: 50px;
         margin: 10px;
     }
-    header .sp-search {
+    .sp-search {
         display: block;
-        margin: 50px;
-        margin: 10px;
+        margin: 20px;
+        width: 30px;
     }
 }
 
@@ -262,7 +275,7 @@ Content
     color: rgb(224, 224, 224, 0.5);
 }
 .content .cards .carddetails .btn-text {
-    padding: 7px 0;
+    padding: 7px 20px;
 }
 .content .divider {
     margin: 60px auto;
